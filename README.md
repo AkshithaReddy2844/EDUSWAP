@@ -13,7 +13,7 @@
 ![SellOrDonate Page](SellOrDonate.png)
 
 ### Skills Page
-![Skills Page](Skills.png)
+![Skills Page](skills.png)
 
 ### donate Page
 ![donate Page](donate.png)
