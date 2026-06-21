@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label {
+            font-weight: bold;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Sell Your Skill</h2>
+
+<div class="container">
+    <form id="paidSkillForm">
+
+        <label>Your Name:</label>
+        <input type="text" id="name" required>
+
+        <label>Skill Name:</label>
+        <input type="text" id="skill" required>
+
+        <label>Qualification:</label>
+        <input type="text" id="qualification" required>
+
+        <label>Years of Experience:</label>
+        <input type="number" id="experience" required>
+
+        <label>Price (in USD):</label>
+        <input type="number" id="price" required>
+
+        <label>Email:</label>
+        <input type="email" id="email" required>
+
+        <label>Contact Number (Optional):</label>
+        <input type="tel" id="contact">
+
+        <label>LinkedIn Profile (Optional):</label>
+        <input type="url" id="linkedin">
+
+        <label>Twitter Profile (Optional):</label>
+        <input type="url" id="twitter">
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script type="module">
+
+import { auth } from "./firebase.js";
+import { getFirestore, collection, addDoc } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+// reuse existing Firebase app
+const app = getApp();
+const db = getFirestore(app);
+
+document.getElementById("paidSkillForm").addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const skill = document.getElementById("skill").value.trim();
+    const qualification = document.getElementById("qualification").value.trim();
+    const experience = document.getElementById("experience").value.trim();
+    const price = document.getElementById("price").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const contact = document.getElementById("contact").value.trim();
+    const linkedin = document.getElementById("linkedin").value.trim();
+    const twitter = document.getElementById("twitter").value.trim();
+
+    try {
+
+        await addDoc(collection(db, "paid_skills"), {
+            name,
+            skill,
+            qualification,
+            experience,
+            price,
+            email,
+            contact,
+            linkedin,
+            twitter,
+            createdAt: new Date(),
+            userId: auth.currentUser ? auth.currentUser.uid : null
+        });
+
+        alert("Skill listed successfully!");
+        window.location.href = "purchase_skill.html";
+
+    } catch (error) {
+        alert("Error: " + error.message);
+    }
+
+});
+
+</script>
+
+</body>
+</html>

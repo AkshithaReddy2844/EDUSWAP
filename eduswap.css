@@ -1,0 +1,13 @@
+body {
+    display: flex;
+    justify-content: center;  /* Centers horizontally */
+    align-items: center;      /* Centers vertically */
+    height: 100vh;            /* Full viewport height */
+    margin: 0;                /* Remove default body margin */
+}
+.b{
+    border:2px solid black;
+    border-radius:5%;
+    padding-top:50%;
+    padding-left:30%;
+}

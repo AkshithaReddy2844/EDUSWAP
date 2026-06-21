@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e0f7fa;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .section {
+            width: 45%;
+            border: 2px solid #ddd;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .item {
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+        }
+        #searchBar {
+            width: 50%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Shop - Available Items</h2>
+
+<input type="text" id="searchBar" placeholder="Search items by name...">
+
+<div class="container">
+    <div class="section">
+        <h3>Donated Items</h3>
+        <div id="donatedItems"></div>
+    </div>
+
+    <div class="section">
+        <h3>Items for Sale</h3>
+        <div id="soldItems"></div>
+    </div>
+</div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { collection, getDocs }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+let donations = [];
+let sales = [];
+
+async function loadItems() {
+
+    try {
+
+        const [donationSnapshot, salesSnapshot] = await Promise.all([
+            getDocs(collection(db, "donations")),
+            getDocs(collection(db, "sales"))
+        ]);
+
+        donations = [];
+        donationSnapshot.forEach((doc) => {
+            donations.push(doc.data());
+        });
+
+        sales = [];
+        salesSnapshot.forEach((doc) => {
+            sales.push(doc.data());
+        });
+
+        displayDonationItems(donations);
+        displaySaleItems(sales);
+
+    } catch(error) {
+
+        console.error(error);
+        alert(error.message);
+
+    }
+
+}
+
+function displayDonationItems(items) {
+
+    const donatedItemsDiv =
+    document.getElementById("donatedItems");
+
+    donatedItemsDiv.innerHTML = "";
+
+    if(items.length === 0){
+        donatedItemsDiv.innerHTML =
+        "<p>No donated items available.</p>";
+        return;
+    }
+
+    items.forEach(item => {
+        donatedItemsDiv.innerHTML += `
+        <div class="item">
+            <h3>${item.productName}</h3>
+            <p><b>Brand:</b> ${item.brand}</p>
+            <p><b>Condition:</b> ${item.condition}</p>
+            <p><b>Location:</b> ${item.location}</p>
+            <p><b>Contact:</b> ${item.contact}</p>
+            <p><b>Email:</b> ${item.email}</p>
+        </div>
+        `;
+    });
+}
+
+function displaySaleItems(items) {
+
+    const soldItemsDiv =
+    document.getElementById("soldItems");
+
+    soldItemsDiv.innerHTML = "";
+
+    if(items.length === 0){
+        soldItemsDiv.innerHTML =
+        "<p>No items for sale available.</p>";
+        return;
+    }
+
+    items.forEach(item => {
+        soldItemsDiv.innerHTML += `
+        <div class="item">
+            <h3>${item.productName}</h3>
+            <p><b>Brand:</b> ${item.brand}</p>
+            <p><b>Condition:</b> ${item.condition}</p>
+            <p><b>Price:</b> ${item.price}</p>
+            <p><b>Location:</b> ${item.location}</p>
+            <p><b>Contact:</b> ${item.contact}</p>
+            <p><b>Email:</b> ${item.email}</p>
+        </div>
+        `;
+    });
+}
+
+document.getElementById("searchBar")
+.addEventListener("keyup", function(){
+
+    const value = this.value.toLowerCase();
+
+    const filteredSales = sales.filter(item =>
+        item.productName.toLowerCase().includes(value)
+    );
+
+    const filteredDonations = donations.filter(item =>
+        item.productName.toLowerCase().includes(value)
+    );
+
+    displayDonationItems(filteredDonations);
+    displaySaleItems(filteredSales);
+
+});
+
+loadItems();
+
+</script>
+
+</body>
+</html>

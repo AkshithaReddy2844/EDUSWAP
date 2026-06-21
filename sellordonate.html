@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#f8f9fa,#e9f5f2);
+    min-height:100vh;
+}
+
+/* Header */
+header{
+    background:linear-gradient(135deg,#272757,#3f3f8f);
+    color:white;
+    text-align:center;
+    padding:30px 20px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
+
+header h1{
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+header p{
+    font-size:18px;
+}
+
+/* Container */
+.container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:35px;
+    padding:50px;
+}
+
+/* Cards */
+.box{
+    background:white;
+    border-radius:20px;
+    width:320px;
+    min-height:320px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.12);
+    transition:all 0.3s ease;
+}
+
+.box:hover{
+    transform:translateY(-12px);
+    box-shadow:0 15px 30px rgba(0,0,0,0.18);
+}
+
+/* Icons */
+.box i{
+    font-size:65px;
+    color:#2a9d8f;
+    margin-bottom:20px;
+}
+
+/* Headings */
+.box h2{
+    font-size:28px;
+    color:#272757;
+    margin-bottom:15px;
+}
+
+/* Paragraph */
+.box p{
+    font-size:16px;
+    color:#555;
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+/* Buttons */
+.button{
+    background:linear-gradient(135deg,#2b9348,#55a630);
+    color:white;
+    text-decoration:none;
+    padding:14px 28px;
+    border-radius:10px;
+    display:inline-block;
+    font-size:16px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.button:hover{
+    background:linear-gradient(135deg,#238636,#2b9348);
+    transform:scale(1.05);
+}
+
+/* Footer */
+footer{
+    background:#505081;
+    color:white;
+    text-align:center;
+    padding:15px;
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎓 Welcome to EduAccess</h1>
+    <p>Donate, Sell, Purchase & Share Educational Accessories</p>
+</header>
+
+<div class="container">
+
+    <!-- Donate -->
+    <div class="box">
+        <i class="fas fa-hand-holding-heart"></i>
+        <h2>Donate</h2>
+        <p>
+            Have educational items you no longer need?
+            Donate them and help students learn and grow.
+        </p>
+        <a href="donate.html" class="button">Donate Now</a>
+    </div>
+
+    <!-- Sell -->
+    <div class="box">
+        <i class="fas fa-tags"></i>
+        <h2>Sell</h2>
+        <p>
+            Sell your books, calculators, lab kits,
+            and accessories at affordable prices.
+        </p>
+        <a href="sell.html" class="button">Sell Now</a>
+    </div>
+
+    <!-- Purchase -->
+    <div class="box">
+        <i class="fas fa-shopping-cart"></i>
+        <h2>Purchase</h2>
+        <p>
+            Browse educational resources and buy
+            quality products from fellow students.
+        </p>
+        <a href="shop.html" class="button">Shop Now</a>
+    </div>
+
+    <!-- Clear Data -->
+    <div class="box">
+        <i class="fas fa-trash-alt"></i>
+        <h2>Clear Data</h2>
+        <p>
+            Remove all stored donation and sales
+            information from the platform.
+        </p>
+        <a href="clear.html" class="button">Clear Now</a>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2025 EduAccess. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
+

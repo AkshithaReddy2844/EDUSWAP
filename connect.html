@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .profile-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: left;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Influencer Profiles</h2>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search by name or app..." onkeyup="filterProfiles()">
+</div>
+
+<div class="container" id="profilesContainer"></div>
+
+<!-- Firebase Script -->
+<script type="module">
+
+import { auth } from "./firebase.js";
+import { getFirestore, collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+// reuse Firebase app
+const app = getApp();
+const db = getFirestore(app);
+
+const container = document.getElementById("profilesContainer");
+let allProfiles = [];
+
+async function loadProfiles() {
+    const querySnapshot = await getDocs(collection(db, "influencers"));
+    container.innerHTML = "";
+
+    allProfiles = [];
+
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        allProfiles.push(data);
+    });
+
+    displayProfiles(allProfiles);
+}
+
+function displayProfiles(profiles) {
+    container.innerHTML = "";
+
+    profiles.forEach(user => {
+        const card = document.createElement("div");
+        card.className = "profile-card";
+
+        card.innerHTML = `
+            <p><strong>Name:</strong> ${user.name}</p>
+            <p><strong>Email:</strong> ${user.email}</p>
+            <p><strong>Popular On:</strong> ${user.popularApp}</p>
+            <p><strong>Social Link:</strong> 
+                <a href="${user.socialLink}" target="_blank">
+                    Visit Profile
+                </a>
+            </p>
+            <p><strong>About:</strong> ${user.description}</p>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+window.filterProfiles = function () {
+    const searchValue = document.getElementById("searchInput").value.toLowerCase();
+
+    const filtered = allProfiles.filter(user =>
+        user.name.toLowerCase().includes(searchValue) ||
+        user.popularApp.toLowerCase().includes(searchValue)
+    );
+
+    displayProfiles(filtered);
+}
+
+loadProfiles();
+
+</script>
+</body>
+</html>

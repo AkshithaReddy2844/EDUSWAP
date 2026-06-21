@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.user {
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.user h3 {
+    margin: 0 0 10px;
+}
+
+.user p {
+    margin: 5px 0;
+}
+
+.user a {
+    display: inline-block;
+    margin-top: 8px;
+    text-decoration: none;
+    color: white;
+    background: #0077B5;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+
+.user a:hover {
+    background: #005582;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>SOFTWARE ENGINEERING REGISTERED EXPERTS</h2>
+    <div id="userDetails">Loading...</div>
+</div>
+
+<script type="module">
+
+import { auth } from "./firebase.js";
+import { getFirestore, collection, query, where, getDocs }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+// reuse existing Firebase app
+const app = getApp();
+const db = getFirestore(app);
+
+const container = document.getElementById("userDetails");
+
+async function loadSoftwareUsers() {
+
+    try {
+
+        const q = query(
+            collection(db, "skills"),
+            where("course", "==", "Software Engineering")
+        );
+
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+            container.innerHTML = "<p>No Software Engineering experts registered yet.</p>";
+            return;
+        }
+
+        container.innerHTML = "";
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+
+            container.innerHTML += `
+                <div class="user">
+                    <h3>${data.name}</h3>
+                    <p><strong>Description:</strong> ${data.description || "No description provided"}</p>
+                    ${data.social ? `<a href="${data.social}" target="_blank">View Profile</a>` : ""}
+                </div>
+            `;
+        });
+
+    } catch (error) {
+        console.error(error);
+        container.innerHTML = "<p>Error loading data. Check console.</p>";
+    }
+}
+
+loadSoftwareUsers();
+
+</script>
+</body>
+</html>

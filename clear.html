@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            width: 80%;
+            max-width: 400px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+        }
+        button {
+            width: 100%;
+            background-color: #dc3545;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Clear Your Data</h2>
+    <p>Enter your phone number and product code to remove the item from the shop.</p>
+
+    <label for="contact">Phone Number:</label>
+    <input type="text" id="contact" placeholder="Enter your phone number" required>
+
+    <label for="code">Product Code:</label>
+    <input type="text" id="code" placeholder="Enter product code" required>
+
+    <button id="clear-btn">Clear My Data</button>
+</div>
+
+<script type="module">
+
+import { auth } from "./firebase.js";
+import { getFirestore, collection, getDocs, deleteDoc, doc } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+// reuse Firebase app
+const app = getApp();
+const db = getFirestore(app);
+
+document.getElementById("clear-btn").addEventListener("click", async function() {
+
+    const contact = document.getElementById("contact").value.trim();
+    const code = document.getElementById("code").value.trim();
+
+    if (!contact || !code) {
+        alert("Please enter both phone number and product code.");
+        return;
+    }
+
+    let found = false;
+
+    try {
+
+        // Check in sales collection
+        const salesSnapshot = await getDocs(collection(db, "sales"));
+        for (const documentSnap of salesSnapshot.docs) {
+            const data = documentSnap.data();
+            if (data.contact === contact && data.productCode === code) {
+                await deleteDoc(doc(db, "sales", documentSnap.id));
+                found = true;
+            }
+        }
+
+        // Check in donations collection
+        const donationSnapshot = await getDocs(collection(db, "donations"));
+        for (const documentSnap of donationSnapshot.docs) {
+            const data = documentSnap.data();
+            if (data.contact === contact && data.productCode === code) {
+                await deleteDoc(doc(db, "donations", documentSnap.id));
+                found = true;
+            }
+        }
+
+        if (found) {
+            alert("Data cleared successfully.");
+            window.location.href = "shop.html";
+        } else {
+            alert("No matching data found.");
+        }
+
+    } catch (error) {
+        alert("Error: " + error.message);
+    }
+
+});
+
+</script>
+</body>
+</html>

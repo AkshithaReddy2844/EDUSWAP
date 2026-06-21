@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <title>Networking Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 20px;
+            background-color: #f5f5f5;
+            background-image: url('IMAGES/urg1.jpeg');
+            background-size: contain;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .welcome-container {
+            margin-top: 30px;
+            font-size: 38px;
+            font-weight: bold;
+            color:black;
+        }
+        .container {
+            margin: 30px auto;
+            max-width: 600px;
+            background: #FFF2F2;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            font-size: 28px;
+            margin: 15px;
+            padding: 12px 25px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4542df;
+            color: white;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .network-image {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+        input, label {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        form {
+            display: none;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="top-right">
+    <button onclick="showRegister()">Register</button>
+</div>
+
+<div class="welcome-container">
+    Welcome to the Networking Portal
+</div>
+
+<div class="container">
+    <button onclick="window.location.href='college.html'">Network through College</button>
+    <br>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMknAcsZfbNaVIgKUAegsGOIJhZl1Vm0JErRLh_B-PtQ&s=10" class="network-image">
+
+    <br><br>
+
+    <button onclick="window.location.href='place.html'">Network through Place</button>
+    <br>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrYBsMHIIEWhk2VcDvdEpumQ3sg_pP9AqpBiB2ZQOnkQ&s=10" class="network-image">
+
+    <!-- ✅ REGISTER FORM -->
+    <form id="registerForm">
+        <h3>Register</h3>
+
+        <label>Name:</label>
+        <input type="text" id="name" required>
+
+        <label>College Name:</label>
+        <input type="text" id="college" required>
+
+        <label>College Location:</label>
+        <input type="text" id="collegeLocation" required>
+
+        <label>Social Media Link:</label>
+        <input type="url" id="socialLink">
+
+        <button type="button" onclick="registerUser()">Submit</button>
+    </form>
+</div>
+
+<!-- 🔥 Firebase Script -->
+<script type="module">
+
+import { auth } from "./firebase.js";
+import { onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, addDoc, collection } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+// reuse Firebase app
+const app = getApp();
+const db = getFirestore(app);
+
+// 🔐 Protect Page
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "login.html";
+    }
+});
+
+// Show form
+window.showRegister = function() {
+    document.getElementById('registerForm').style.display = 'block';
+}
+
+// Register user
+window.registerUser = async function() {
+
+    const name = document.getElementById('name').value;
+    const college = document.getElementById('college').value;
+    const collegeLocation = document.getElementById('collegeLocation').value;
+    const socialLink = document.getElementById('socialLink').value;
+
+    if (!name || !college || !collegeLocation) {
+        alert("Please fill required fields");
+        return;
+    }
+
+    try {
+
+        await addDoc(collection(db, "network_users"), {
+            name,
+            college,
+            collegeLocation,
+            socialLink,
+            createdAt: new Date(),
+            userId: auth.currentUser ? auth.currentUser.uid : null
+        });
+
+        alert("Registration Successful!");
+
+        document.getElementById('registerForm').reset();
+        document.getElementById('registerForm').style.display = 'none';
+
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+</script>
+</body>
+</html>

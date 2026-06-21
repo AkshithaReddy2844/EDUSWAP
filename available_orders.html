@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+        h2 { font-size: 28px; color: #333; margin-bottom: 20px; }
+        .user-container { margin-top: 20px; text-align: left; }
+        .user { display: flex; align-items: center; padding: 15px; border-bottom: 2px solid #ddd; background: #fff; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+        .user img { max-width: 100px; border-radius: 50%; margin-right: 20px; }
+        .user-info { flex: 1; }
+        .user-info h3 { margin: 0 0 10px; color: #333; font-size: 20px; }
+        .user-info p { margin: 5px 0; font-size: 16px; color: #555; }
+        .social-links { margin-top: 10px; }
+        .social-links a { display: inline-block; text-decoration: none; color: white; padding: 8px 12px; margin-right: 10px; border-radius: 5px; font-size: 14px; }
+        .twitter { background: #1DA1F2; }
+        .facebook { background: #3b5998; }
+        .linkedin { background: #0077B5; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>ARTIFICIAL INTELLIGENCE REGISTERED USERS</h2>
+        <div class="user-container" id="userDetails">
+            <p>Loading user details...</p>
+        </div>
+    </div>
+
+    <script>
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+
+        let aiUsers = users.filter(user => user.course === "ai.html");
+
+        if (aiUsers.length > 0) {
+            document.getElementById("userDetails").innerHTML = aiUsers.map(user => `
+                <div class="user">
+                    <img src="${user.profilePhoto || 'default-user.png'}" alt="Profile Photo">
+                    <div class="user-info">
+                        <h3>${user.name}</h3>
+                        <p><strong>Description:</strong> ${user.description}</p>
+                        <div class="social-links">
+                            ${user.twitter ? `<a href="${user.twitter}" target="_blank" class="twitter">Twitter</a>` : ""}
+                            ${user.facebook ? `<a href="${user.facebook}" target="_blank" class="facebook">Facebook</a>` : ""}
+                            ${user.linkedin ? `<a href="${user.linkedin}" target="_blank" class="linkedin">LinkedIn</a>` : ""}
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+        } else {
+            document.getElementById("userDetails").innerHTML = "<p>No users have registered for Artificial Intelligence yet.</p>";
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+body {
+    background-image: url("IMAGES/pic2.jpg");
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.a1 {
+    text-align: center;
+    font-size: 2rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-top: 250px;
+    animation: blink 1s infinite alternate; /* Apply animation */
+}
+
+.a1 a {
+    text-decoration: none;
+    color: darkblue; /* Default color */
+    animation: colorChange 1s infinite alternate; /* Apply color change animation */
+}
+
+/* Blinking Color Animation */
+@keyframes colorChange {
+    0% { color: red; }
+    25% { color: blue; }
+    50% { color: green; }
+    75% { color: orange; }
+    100% { color: purple; }
+}
+.welcome {
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    color: blueviolet; /* Orange-red */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0px;
+    text-align: center;
+    width: 100%;
+}
+.subtitle {
+    font-size: 1.5rem;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    color: black;
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}

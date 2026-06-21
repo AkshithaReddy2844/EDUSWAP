@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 120px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            width: 500px;
+            height: 500px;
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background-size: cover;
+            background-position: center;
+            border: 7px solid;
+            animation: softBorder 8s infinite linear;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card.skills {
+            background-image: url('https://images.openai.com/static-rsc-4/7M1WnE8mhHIMcna9vmvPlxkWWknNMz9lrP6adjb-1LuxzQGTJmltZQK46Uve1LkykXJ2T7VIjFlIjBiNHNEY5dnJwHE0gprkv2rIZU4x-SWo7P3aA_mY7wVVog3gDQ1mshg8pT_n5zk370sd0W_ugWFgI41eL072dv8XcgBC5ccIJkgVAn4YPEOZEpekDAls?purpose=fullsize');
+        }
+
+        .card.location {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLfnDUHHAOlaANWMLk9BX0baJvfDTyWi1i42Yb5M-EDg&s=10');
+        }
+
+        .card.profile {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz88Zfh6VgeazsLshtmNJRc6pwk4pfrD8IoodeO_h91Q&s=10');
+        }
+
+        .card-wrapper a {
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .card-wrapper a:hover {
+            color: #0077cc;
+        }
+
+        h1 {
+            margin-top: 60px;
+            font-size: 36px;
+            color: #333;
+        }
+
+        @keyframes softBorder {
+            0%   { border-color: #f8cdda; }
+            25%  { border-color: #d5e8f6; }
+            50%  { border-color: #c0f2dc; }
+            75%  { border-color: #fde2e4; }
+            100% { border-color: #f8cdda; }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1><b>Connect Through Networking</b></h1>
+
+<div class="container">
+    <div class="card-wrapper">
+        <div class="card skills"></div>
+        <a href="network_skills.html"><h1>Skills</h1></a>
+    </div>
+
+    <div class="card-wrapper">
+        <div class="card location"></div>
+        <a href="network_location.html"><h1>Location</h1></a>
+    </div>
+
+    <div class="card-wrapper">
+        <div class="card profile"></div>
+        <a href="network_profile.html"><h1>Profile</h1></a>
+    </div>
+</div>
+
+<!-- 🔥 Firebase Protection Script -->
+<script type="module">
+
+import { auth } from "./firebase.js";
+import { onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+// 🔐 Protect Page
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "login.html";
+    }
+});
+
+</script>
+</body>
+</html>

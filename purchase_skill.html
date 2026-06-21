@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            height: 90vh;
+        }
+        .section {
+            width: 50%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .left {
+            background-color: #d4edda;
+        }
+        .right {
+            background-color: #f8d7da;
+        }
+        .search-box {
+            width: 80%;
+            padding: 10px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        .skill-card {
+            background: white;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .skill-card strong {
+            color: #007bff;
+        }
+        .link {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">Find Your Skill</div>
+
+<input type="text" id="searchBar" class="search-box" placeholder="Search skills by name...">
+
+<div class="container">
+    <div class="section left">
+        <h2>Free Skills</h2>
+        <div id="free-skills"></div>
+    </div>
+    <div class="section right">
+        <h2>Paid Skills</h2>
+        <div id="paid-skills"></div>
+    </div>
+</div>
+
+<script type="module">
+
+import { auth } from "./firebase.js";
+import { getFirestore, collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+// reuse existing Firebase app
+const app = getApp();
+const db = getFirestore(app);
+
+let freeSkills = [];
+let paidSkills = [];
+
+async function loadSkills() {
+
+    const freeSnapshot = await getDocs(collection(db, "free_skills"));
+    freeSkills = freeSnapshot.docs.map(doc => doc.data());
+
+    const paidSnapshot = await getDocs(collection(db, "paid_skills"));
+    paidSkills = paidSnapshot.docs.map(doc => doc.data());
+
+    displaySkills(freeSkills, paidSkills);
+}
+
+function displaySkills(freeList, paidList) {
+
+    const freeContainer = document.getElementById("free-skills");
+    const paidContainer = document.getElementById("paid-skills");
+
+    freeContainer.innerHTML = freeList.length
+        ? freeList.map(skill => `
+            <div class="skill-card">
+                <strong>Name:</strong> ${skill.name} <br>
+                <strong>Skill:</strong> ${skill.skill} <br>
+                <strong>Qualification:</strong> ${skill.qualification} <br>
+                <strong>Experience:</strong> ${skill.experience} years <br>
+                <strong>Email:</strong> ${skill.email} <br>
+                <strong>Contact:</strong> ${skill.contact || "Not Provided"} <br>
+                ${skill.linkedin ? `<strong>LinkedIn:</strong> <a href="${skill.linkedin}" class="link" target="_blank">View Profile</a><br>` : ""}
+                ${skill.twitter ? `<strong>Twitter:</strong> <a href="${skill.twitter}" class="link" target="_blank">Follow</a><br>` : ""}
+            </div>
+        `).join("")
+        : "<p>No free skills available.</p>";
+
+    paidContainer.innerHTML = paidList.length
+        ? paidList.map(skill => `
+            <div class="skill-card">
+                <strong>Name:</strong> ${skill.name} <br>
+                <strong>Skill:</strong> ${skill.skill} <br>
+                <strong>Qualification:</strong> ${skill.qualification} <br>
+                <strong>Experience:</strong> ${skill.experience} years <br>
+                <strong>Email:</strong> ${skill.email} <br>
+                <strong>Contact:</strong> ${skill.contact || "Not Provided"} <br>
+                ${skill.linkedin ? `<strong>LinkedIn:</strong> <a href="${skill.linkedin}" class="link" target="_blank">View Profile</a><br>` : ""}
+                ${skill.twitter ? `<strong>Twitter:</strong> <a href="${skill.twitter}" class="link" target="_blank">Follow</a><br>` : ""}
+                <strong>Price:</strong> $${skill.price}
+            </div>
+        `).join("")
+        : "<p>No paid skills available.</p>";
+}
+
+document.getElementById("searchBar").addEventListener("keyup", function() {
+
+    const searchValue = this.value.toLowerCase();
+
+    const filteredFree = freeSkills.filter(skill =>
+        skill.skill.toLowerCase().includes(searchValue)
+    );
+
+    const filteredPaid = paidSkills.filter(skill =>
+        skill.skill.toLowerCase().includes(searchValue)
+    );
+
+    displaySkills(filteredFree, filteredPaid);
+});
+
+loadSkills();
+
+</script>
+
+</body>
+</html>
