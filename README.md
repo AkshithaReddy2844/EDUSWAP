@@ -9,7 +9,7 @@
 ### SellOrDonate Page
 ![SellOrDonate Page](SellOrDonate.jpg)
 
-###donate Page
+### donate Page
 ![donate Page](donate.png)
 
 ### Network Page
