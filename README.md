@@ -1,17 +1,17 @@
 ## 📸 Screenshots
 
 ### Login Page
-![Login Page](images/loginpage.jpg)
+![Login Page](loginpage.jpg)
 
 ### Dashboard Page
-![Dashboard Page](images/dashboard.png)
+![Dashboard Page](dashboard.png)
 
 ### SellOrDonate Page
-![SellOrDonate Page](images/SellOrDonate.jpg)
+![SellOrDonate Page](SellOrDonate.jpg)
 
 ###donate Page
-![donate Page](images/donate.jpg)
+![donate Page](donate.jpg)
 
 ### Network Page
-![Network Page](images/network_profile.png)
+![Network Page](network_profile.png)
 
