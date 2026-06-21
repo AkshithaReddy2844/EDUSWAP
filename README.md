@@ -6,8 +6,8 @@
 ### Dashboard Page
 ![Dashboard Page](dashboard.png)
 
-### SellOrDonate Page
-![SellOrDonate Page](SellOrDonate.jpg)
+### Skills Page
+![Skills Page](Skills.png)
 
 ### donate Page
 ![donate Page](donate.png)
