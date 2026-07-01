@@ -3,7 +3,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDcGTMI3xOfKAHSpdqAY3QOVH9dkSX3AHI",
+  apiKey: "#",
   authDomain: "eduswap-4997d.firebaseapp.com",
   projectId: "eduswap-4997d",
   storageBucket: "eduswap-4997d.firebasestorage.app",
